@@ -3,10 +3,26 @@ from matrix import *
 
 
 def add_circle( points, cx, cy, cz, r, step ):
-    pass
+    t = step
+    while t <= 1.001:
+        x0 = r * math.cos(2 * math.pi * (t - step)) + cx
+        y0 = r * math.sin(2 * math.pi * (t - step)) + cy
+        x1 = r * math.cos(2 * math.pi * t) + cx
+        y1 = r * math.sin(2 * math.pi * t) + cy
+        add_edge(points, x0, y0, cz, x1, y1, cz)
+        t += step
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    pass
+    t = step
+    x = generate_curve_coefs(x0, x1, x2, x3, curve_type)[0]
+    y = generate_curve_coefs(y0, y1, y2, y3, curve_type)[0]
+    while t <= 1.001:
+        x0 = x[0] * (t - step) ** 3 + x[1] * (t - step) ** 2 + x[2] * (t - step) + x[3]
+        y0 = y[0] * (t - step) ** 3 + y[1] * (t - step) ** 2 + y[2] * (t - step) + y[3]
+        x1 = x[0] * t ** 3 + x[1] * t ** 2 + x[2] * t + x[3]
+        y1 = y[0] * t ** 3 + y[1] * t ** 2 + y[2] * t + y[3]
+        add_edge(points, x0, y0, 0, x1, y1, 0)
+        t += step
 
 
 
